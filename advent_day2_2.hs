@@ -30,8 +30,9 @@ parse [c,ns]
 parse _ = error "Expected two items on line"
     
 main = do
-    fileName <- fmap head getArgs
-    lines <- fmap Text.lines (Text.readFile fileName)
-    let commands = fmap (parse . Text.split isSpace) lines
+    [fileName] <- getArgs
+    content <- Text.readFile fileName
+    let lines = Text.lines content
+        commands = map (parse . Text.split isSpace) lines
         position = foldl update (Position 0 0 0) commands 
     print $ result position
