@@ -1,0 +1,6 @@
+advent1 day1_test_input.txt: 7
+advent1 day1_input.txt: 1655
+advent2 day1_test_input.txt: 5
+advent2 day1_input.txt: 1683
+advent_day2_1 day2_test_input.txt: 150
+advent_day2_1 day2_input.txt: 1714950
