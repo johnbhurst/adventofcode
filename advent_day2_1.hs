@@ -20,18 +20,18 @@ result (Position h d) = h * d
 toInt :: Text.Text -> Int 
 toInt s = read $ Text.unpack s
 
-parse :: Text.Text -> Command
-parse s
+parse :: [Text.Text] -> Command
+parse [c,ns] 
     | c == Text.pack "forward" = Forward n 
     | c == Text.pack "up" = Up n
-    | otherwise = Down n
-    where sl = Text.split isSpace s
-          c = head sl
-          n = toInt $ head $ tail sl
-
+    | c == Text.pack "down" = Down n
+    | otherwise = error "Unrecognised command"
+    where n = toInt ns
+parse _ = error "Expected two items on line"
+    
 main = do
     fileName <- fmap head getArgs
     lines <- fmap Text.lines (Text.readFile fileName)
-    let commands = fmap parse lines
+    let commands = fmap (parse . Text.split isSpace) lines
         position = foldl update (Position 0 0) commands 
     print $ result position
