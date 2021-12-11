@@ -2,8 +2,8 @@
 -- 2021-12-12
 
 import Data.Char
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
+import qualified Data.Text.Lazy as Text
+import qualified Data.Text.Lazy.IO as Text
 import System.Environment
 
 data Command = Forward Int | Up Int | Down Int deriving (Show)
