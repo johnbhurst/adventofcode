@@ -13,9 +13,7 @@ import qualified Data.Text.Lazy.IO as Text
 import System.Environment
 
 type BinaryDigits = [Bool]
-type BinaryDigitsList = [BinaryDigits]
-type BinaryDigitFrequency = (Int, Int)
-type BinaryDigitFrequencies = [BinaryDigitFrequency]
+type BinaryDigitFrequencies = [(Int,Int)]
 
 -- ["010", "110", "001"] -> [[False, True, False], [True, True, False], [False, False, True]]
 makeBinaryDigits :: [Text.Text] -> [BinaryDigits]
