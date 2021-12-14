@@ -8,3 +8,5 @@ advent_day2_2 day2_test_input.txt: 900
 advent_day2_2 day2_input.txt: 1281977850
 advent_day3_1 day3_test_input.txt: 198
 advent_day3_1 day3_input.txt: 3309596
+advent_day3_2 day3_test_input.txt: 230
+advent_day3_2 day3_input.txt: 2981085
