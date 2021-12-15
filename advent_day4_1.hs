@@ -17,13 +17,13 @@ toInt = read . Text.unpack
 readDraw :: Text.Text -> Draw
 readDraw line = map toInt $ Text.splitOn (Text.pack ",") line
 
-makeBoard :: [[Int]] -> Board
-makeBoard = map makeRow
-    where makeRow = map makePosition
-          makePosition i = (i, False)
-
 makeRow :: Text.Text -> [Int]
 makeRow t = map toInt $ Text.words t
+
+makeBoard :: [[Int]] -> Board
+makeBoard = map makePositions
+    where makePositions = map makePosition
+          makePosition i = (i, False)
 
 readBoards' :: [[Int]] -> [Text.Text] -> [Board]
 readBoards' rows (h:t) = if h == Text.pack "" 
@@ -39,26 +39,18 @@ readGame :: [Text.Text] -> (Draw, [Board])
 readGame (firstLine:restLines) = (readDraw firstLine, readBoards restLines)
 readGame [] = error "Expected input"
 
+place :: Int -> [Board] -> [Board]
+place n = map $ placeOnBoard n
+    where placeInPosition n (m, f) = if  n == m then (m, True) else (m, f)
+          placeOnRow n = map $ placeInPosition n
+          placeOnBoard n = map $ placeOnRow n
+
 isFilled :: BoardPosition -> Bool
 isFilled = snd
 
-isRowFilled :: [BoardPosition] -> Bool
-isRowFilled = all isFilled
-
-placeInPosition :: Int -> BoardPosition -> BoardPosition
-placeInPosition n (m, f) = if  n == m then (m, True) else (m, f)
-
-placeOnRow :: Int -> [BoardPosition] -> [BoardPosition]
-placeOnRow n = map $ placeInPosition n
-
-placeOnBoard :: Int -> Board -> Board
-placeOnBoard n = map $ placeOnRow n
-
-place :: Int -> [Board] -> [Board]
-place n = map $ placeOnBoard n
-
 isWin :: Board -> Bool 
 isWin board = any isRowFilled board || any isRowFilled (transpose board)
+    where isRowFilled = all isFilled
 
 findWin :: Draw -> [Board] -> (Int, Board)
 findWin (n:restDraws) boards = if winningBoards /= [] 
