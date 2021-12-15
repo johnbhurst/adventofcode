@@ -10,3 +10,5 @@ advent_day3_1 day3_test_input.txt: 198
 advent_day3_1 day3_input.txt: 3309596
 advent_day3_2 day3_test_input.txt: 230
 advent_day3_2 day3_input.txt: 2981085
+advent_day4_1 day4_test_input.txt: 4512
+advent_day4_1 day4_input.txt: 64084
