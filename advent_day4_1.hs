@@ -26,7 +26,7 @@ makeBoard = map makePositions
           makePosition i = (i, False)
 
 readBoards' :: [[Int]] -> [Text.Text] -> [Board]
-readBoards' rows (h:t) = if h == Text.pack "" 
+readBoards' rows (h:t) = if h == Text.pack ""
     then makeBoard rows : readBoards' [] t
     else readBoards' (makeRow h : rows) t
 readBoards' rows [] = [makeBoard rows | rows /= []]
@@ -48,22 +48,22 @@ place n = map $ placeOnBoard n
 isFilled :: BoardPosition -> Bool
 isFilled = snd
 
-isWin :: Board -> Bool 
+isWin :: Board -> Bool
 isWin board = any isRowFilled board || any isRowFilled (transpose board)
     where isRowFilled = all isFilled
 
 findWin :: Draw -> [Board] -> (Int, Board)
-findWin (n:restDraws) boards = if winningBoards /= [] 
+findWin (n:restDraws) boards = if winningBoards /= []
     then (n, head winningBoards)
     else findWin restDraws nextBoards
     where nextBoards = place n boards
           winningBoards = filter isWin nextBoards
-findWin [] _ = error "No win found"           
+findWin [] _ = error "No win found"
 
 unfilled :: Board -> [Int]
 unfilled board = map fst $ filter (not . isFilled) $ concat board
 
-score :: Board -> Int 
+score :: Board -> Int
 score = sum . unfilled
 
 main = do

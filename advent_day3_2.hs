@@ -21,20 +21,20 @@ zeroesOnes (h:t) = if h then (zeroes, ones+1) else (zeroes+1, ones)
     where (zeroes, ones) = zeroesOnes t
 
 selectGammaDigit :: [BinaryDigits] -> Bool
-selectGammaDigit digits = ones >= zeroes 
+selectGammaDigit digits = ones >= zeroes
     where (zeroes, ones) = zeroesOnes $ map head digits
 
 selectEpsilonDigit :: [BinaryDigits] -> Bool
-selectEpsilonDigit digits = ones < zeroes 
+selectEpsilonDigit digits = ones < zeroes
     where (zeroes, ones) = zeroesOnes $ map head digits
 
-selectDigits :: ([BinaryDigits] -> Bool) -> [BinaryDigits] -> BinaryDigits 
+selectDigits :: ([BinaryDigits] -> Bool) -> [BinaryDigits] -> BinaryDigits
 selectDigits selectDigit digitsList = headDigit : restDigits
     where headDigit = selectDigit digitsList
           filterDigit digits = head digits == headDigit
           restDigitsList = map tail $ filter filterDigit digitsList
-          restDigits = if length restDigitsList == 1 
-              then head restDigitsList 
+          restDigits = if length restDigitsList == 1
+              then head restDigitsList
               else selectDigits selectDigit restDigitsList
 
 selectGammaReading :: [BinaryDigits] -> BinaryDigits

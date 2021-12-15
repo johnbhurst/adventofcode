@@ -17,22 +17,22 @@ update (Position h d a) (Down n) = Position h d (a+n)
 result :: Position -> Int
 result (Position h d _) = h * d
 
-toInt :: Text.Text -> Int 
+toInt :: Text.Text -> Int
 toInt s = read $ Text.unpack s
 
 parse :: [Text.Text] -> Command
-parse [c,ns] 
-    | c == Text.pack "forward" = Forward n 
+parse [c,ns]
+    | c == Text.pack "forward" = Forward n
     | c == Text.pack "up" = Up n
     | c == Text.pack "down" = Down n
     | otherwise = error "Unrecognised command"
     where n = toInt ns
 parse _ = error "Expected two items on line"
-    
+
 main = do
     [fileName] <- getArgs
     content <- Text.readFile fileName
     let lines = Text.lines content
         commands = map (parse . Text.split isSpace) lines
-        position = foldl update (Position 0 0 0) commands 
+        position = foldl update (Position 0 0 0) commands
     print $ result position
