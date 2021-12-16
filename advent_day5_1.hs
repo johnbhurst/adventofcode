@@ -27,18 +27,13 @@ isVertical ((x1,_), (x2,_)) = x1 == x2
 isSelected :: Line -> Bool
 isSelected l = isHorizontal l || isVertical l
 
-horizontalPoints :: Line -> [Point]
-horizontalPoints ((x1, y1), (x2, y2)) = if x1 < x2 then map pt [x1..x2] else map pt [x2..x1]
-    where pt x = (x, y1)
-
-verticalPoints :: Line -> [Point]
-verticalPoints ((x1, y1), (x2, y2)) = if y1 < y2 then map pt [y1..y2] else map pt [y2..y1]
-    where pt y = (x1, y)
+range :: Int -> Int -> [Int]
+range v1 v2 = if v1 < v2 then [v1..v2] else [v2..v1]
 
 coversPoints :: Line -> [Point]
-coversPoints l
-    | isHorizontal l = horizontalPoints l
-    | isVertical l = verticalPoints l
+coversPoints ((x1, y1), (x2, y2))
+    | y1 == y2 = map (\x -> (x,y1)) $ range x1 x2
+    | x1 == x2 = map (\y -> (x1,y)) $ range y1 y2
     | otherwise = error "Only horizontal or vertical lines supported"
 
 main = do
