@@ -24,3 +24,5 @@ advent_day6_2 day6_test_input.txt: 26984457539
 advent_day6_2 day6_input.txt: 1738377086345
 advent_day7_1 day7_test_input.txt: 37
 advent_day7_1 day7_input.txt: 344535
+advent_day7_2 day7_test_input.txt: 168
+advent_day7_2 day7_input.txt: 95581659
