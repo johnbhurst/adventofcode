@@ -32,3 +32,5 @@ advent_day8_2 day8_test_input.txt: 5353
 advent_day8_2 day8_input.txt: 998900
 advent_day9_1 day9_test_input.txt: 15
 advent_day9_1 day9_input.txt: 518
+advent_day9_2 day9_test_input.txt: 1134
+advent_day9_2 day9_input.txt: 949905
