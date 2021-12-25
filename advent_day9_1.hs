@@ -14,19 +14,20 @@ makeHeights lines = listArray ((1,1),(nrows,ncols)) $ concat rows
           nrows = length rows
           ncols = length $ head rows
 
-isLocalMin :: Array (Int,Int) Int -> (Int,Int) -> Bool
-isLocalMin a (r,c) = isMinx1 && isMinx2 && isMiny1 && isMiny2
+isLocalMin :: Array (Int,Int) Int -> ((Int,Int), Int) -> Bool
+isLocalMin a ((r,c), val) = isMinx1 && isMinx2 && isMiny1 && isMiny2
     where ((minRow,minCol),(maxRow,maxCol)) = bounds a
-          isMinx1 = r == minRow || a!(r,c) < a!(r-1,c)
-          isMinx2 = r == maxRow || a!(r,c) < a!(r+1,c)
-          isMiny1 = c == minCol || a!(r,c) < a!(r,c-1)
-          isMiny2 = c == maxCol || a!(r,c) < a!(r,c+1)
+          isMinx1 = r == minRow || val < a!(r-1,c)
+          isMinx2 = r == maxRow || val < a!(r+1,c)
+          isMiny1 = c == minCol || val < a!(r,c-1)
+          isMiny2 = c == maxCol || val < a!(r,c+1)
 
 main = do
     [fileName] <- getArgs
     content <- Text.readFile fileName
     let lines = Text.lines content
         heights = makeHeights lines
-        minIndices = filter (isLocalMin heights) $ indices heights
-        result = sum $ map ((+1) . (\(r,c) -> heights!(r,c))) minIndices
+        minHeights = map snd $ filter (isLocalMin heights) $ assocs heights
+        riskLevels = map (+1) minHeights
+        result = sum riskLevels
     print result
