@@ -5,6 +5,8 @@ let rec countLarger l =
     | h1::h2::t -> (if h2 > h1 then 1 else 0) + countLarger (h2::t)
     | _ -> 0
 
-let input = System.IO.File.ReadAllLines( System.Environment.GetCommandLineArgs().[1] ) |> Array.map int |> List.ofArray
-let result = countLarger input
+let result = System.IO.File.ReadLines( System.Environment.GetCommandLineArgs().[1] )
+                |> List.ofSeq
+                |> List.map int
+                |> countLarger
 printfn "%d" result
