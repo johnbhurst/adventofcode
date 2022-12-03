@@ -13,7 +13,6 @@ let finddup (s1, s2, s3) =
     let l3 = Seq.toList s3
     let contains c l = List.exists (fun c2 -> c2=c) l
     List.find (fun c -> contains c l2 && contains c l3) l1
-    // List.find (fun c -> List.exists (fun c2 -> c2=c) l2 && List.exists (fun c2 )) l1
 
 let score c =
     match c with
