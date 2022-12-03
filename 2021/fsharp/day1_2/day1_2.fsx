@@ -1,3 +1,4 @@
+#!/usr/bin/env -S dotnet fsi
 // Try advent 2021 day 1 in F#
 
 let rec countLargerWindow l =

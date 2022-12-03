@@ -1,3 +1,4 @@
+#!/usr/bin/env -S dotnet fsi
 // Copyright 2022 John Hurst
 // John Hurst (john.b.hurst@gmail.com)
 // 2022-12-01
