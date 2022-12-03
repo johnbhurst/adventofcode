@@ -26,7 +26,7 @@ let parse (line: string) =
     | "down" -> Down n
     | _ -> failwith "Invalid command"
 
-let result = System.IO.File.ReadLines( System.Environment.GetCommandLineArgs().[1] )
+let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
                 |> List.ofSeq
                 |> List.map parse
                 |> List.fold update { horizontal = 0; vertical = 0 }

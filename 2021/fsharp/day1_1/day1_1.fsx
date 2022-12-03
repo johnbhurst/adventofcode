@@ -5,7 +5,7 @@ let rec countLarger l =
     | h1::h2::t -> (if h2 > h1 then 1 else 0) + countLarger (h2::t)
     | _ -> 0
 
-let result = System.IO.File.ReadLines( System.Environment.GetCommandLineArgs().[1] )
+let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
                 |> List.ofSeq
                 |> List.map int
                 |> countLarger

@@ -1,9 +1,9 @@
 # F#
 
-Run these projects using the `dotnet` command, like this:
+Run these projects using the `dotnet fsi` command, like this:
 
 ``` bash
-dotnet run ../../day1_input.txt
+dotnet fsi day1_1.fsx ../../day1_input.txt
 ```
 
 My original inputs from when I did the puzzles in Haskell are in 2021/.
