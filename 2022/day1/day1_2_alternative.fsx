@@ -2,7 +2,8 @@
 // John Hurst (john.b.hurst@gmail.com)
 // 2022-12-01
 
-let result = System.IO.File.ReadLines( System.Environment.GetCommandLineArgs().[1] )
+let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+// let result = System.IO.File.ReadLines( System.Environment.GetCommandLineArgs().[1] )
                 |> List.ofSeq
                 |> String.concat "#"
                 |> (fun s -> s.Split("##"))
