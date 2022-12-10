@@ -41,18 +41,19 @@ let popItem i stackSet =
         stackSet.items.[i] <- rest
         item
 
-// let rec move n src dst stackSet =
-//     match n with
-//     | 0 -> stackSet
-//     | _ -> move (n - 1) src dst (pushItem dst (popItem src stackSet) stackSet)
-
 let move n src dst stackSet =
     for i in 1..n do
         pushItem dst (popItem src stackSet) stackSet |> ignore
     stackSet
 
-let createRegex = Regex(@"^( +\d)+$")
+// recursive version. It's debatable whether this is more readable than the loop version.
+// let rec move n src dst stackSet =
+//     match n with
+//     | 0 -> stackSet
+//     | _ -> move (n - 1) src dst (pushItem dst (popItem src stackSet) stackSet)
+
 let parseCreate str =
+    let createRegex = Regex(@"^( +\d)+$")
     let m = createRegex.Match(str)
     if m.Success then
         let n = int m.Groups.[1].Value
@@ -60,25 +61,20 @@ let parseCreate str =
     else
         failwith "parseCreate: invalid create"
 
-let setupRegex = Regex(@"^\[([A-Z])\]$")
-let (|Setup|_|) str =
-    let m = setupRegex.Match(str)
-    if m.Success then Some(m.Groups.[1].Value.[0])
-    else None
-let (|Nop|_|) str =
-    match str with
-    | "   " -> Some()
-    | _ -> None
-let parse1Setup i x =
-    match x with
-    | Setup x -> Some(pushItem i x)
-    | Nop _ -> None
-    | _ -> failwith "parse1Setup: invalid setup"
 let parseSetup str =
-    splitTo3 str |> List.mapi parse1Setup
+    let setupRegex = Regex(@"^\[([A-Z])\]$")
+    let parse1 i x =
+        let m = setupRegex.Match(x)
+        if m.Success then
+            Some(pushItem i m.Groups.[1].Value.[0])
+        elif x = "   " then
+            None
+        else
+            failwith "parse1Setup: invalid setup"
+    splitTo3 str |> List.mapi parse1
 
-let moveRegex = Regex(@"^move (\d+) from (\d+) to (\d+)$")
 let parseMove str =
+    let moveRegex = Regex(@"^move (\d+) from (\d+) to (\d+)$")
     let m = moveRegex.Match(str)
     if m.Success then
         let n = int m.Groups.[1].Value
@@ -96,7 +92,7 @@ let (stackLines, moveLines) = split lines
 let (createLine, setupLines) =
     match (List.rev stackLines) with
     | [] -> failwith "no create line"
-    | h :: t -> (h, t)
+    | head :: rest -> (head, rest)
 
 // printfn "stackLines=[%A]" stackLines
 // printfn "moveLines=[%A]" moveLines
