@@ -41,6 +41,7 @@ let popItem i stackSet =
         stackSet.items.[i] <- rest
         item
 
+// move n items from src stack to dst stack in StackSet
 let move n src dst stackSet =
     for i in 1..n do
         pushItem dst (popItem src stackSet) stackSet |> ignore
@@ -52,6 +53,7 @@ let move n src dst stackSet =
 //     | 0 -> stackSet
 //     | _ -> move (n - 1) src dst (pushItem dst (popItem src stackSet) stackSet)
 
+// parse a create line to return a StackSet
 let parseCreate str =
     let createRegex = Regex(@"^( +\d)+$")
     let m = createRegex.Match(str)
@@ -61,6 +63,7 @@ let parseCreate str =
     else
         failwith "parseCreate: invalid create"
 
+// parse a setup line to return a list of operations
 let parseSetup str =
     let setupRegex = Regex(@"^\[([A-Z])\]$")
     let parse1 i x =
@@ -73,6 +76,7 @@ let parseSetup str =
             failwith "parse1Setup: invalid setup"
     splitTo3 str |> List.mapi parse1
 
+// parse a move line to return an operation
 let parseMove str =
     let moveRegex = Regex(@"^move (\d+) from (\d+) to (\d+)$")
     let m = moveRegex.Match(str)
@@ -83,6 +87,10 @@ let parseMove str =
         move n (src-1) (dst-1)
     else
         failwith "parseMove: invalid move"
+
+// apply a list of operations to an object
+let applyTo obj ops =
+    ops |> List.fold (fun acc op -> op acc) obj
 
 // MAIN PROGRAM
 let lines = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
@@ -101,12 +109,11 @@ let (createLine, setupLines) =
 
 let initialStacks = parseCreate createLine
 let setups = setupLines |> List.map parseSetup |> List.concat |> List.choose id
-
-let stacks = setups |> List.fold (fun stack setup -> setup stack) initialStacks
-// printfn "stacks=[%A]" stacks
-
 let moves = moveLines |> List.map parseMove
-let finalStacks = moves |> List.fold (fun stack move -> move stack) stacks
+
+let stacks = setups |> applyTo initialStacks
+let finalStacks = moves |> applyTo stacks
+// printfn "stacks=[%A]" stacks
 // printfn "finalStacks=[%A]" finalStacks
 
 let result = finalStacks.items |> Array.map List.head |> Array.map string |> String.concat ""
