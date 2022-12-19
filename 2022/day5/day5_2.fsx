@@ -123,5 +123,8 @@ let finalStacks = moves |> applyTo stacks
 // printfn "stacks=[%A]" stacks
 // printfn "finalStacks=[%A]" finalStacks
 
-let result = finalStacks.items |> Array.map List.head |> Array.map string |> String.concat ""
-printfn "%s" result
+finalStacks.items
+    |> Array.map List.head
+    |> Array.map string
+    |> String.concat ""
+    |> printfn "%s"

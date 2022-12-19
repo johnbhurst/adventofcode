@@ -16,9 +16,8 @@ let score c =
     | t when t >= 'A' && t <= 'Z' -> 27 + (int t - int 'A')
     | _ -> 0
 
-let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-                |> List.ofSeq
-                |> List.map (split >> finddup >> score)
-                |> List.sum
-
-printf "%A\n" result
+System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+    |> List.ofSeq
+    |> List.map (split >> finddup >> score)
+    |> List.sum
+    |> printfn "%A"

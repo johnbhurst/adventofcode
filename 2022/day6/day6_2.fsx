@@ -14,10 +14,9 @@ let rec packetPos p l =
     let head14 = l |> List.take 14
     if nodups head14 then p+14 else packetPos (p+1) (List.tail l)
 
-let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-                |> List.ofSeq
-                |> List.head
-                |> Seq.toList
-                |> packetPos 0
-
-printfn "%A" result
+System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+    |> List.ofSeq
+    |> List.head
+    |> Seq.toList
+    |> packetPos 0
+    |> printfn "%A"

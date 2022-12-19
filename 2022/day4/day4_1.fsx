@@ -11,9 +11,8 @@ let parse (line:string) =
 
 let score (a,b,c,d) = if a >= c && b <= d || c >= a && d <=  b then 1 else 0
 
-let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-                |> List.ofSeq
-                |> List.map (parse >> score)
-                |> List.sum
-
-printf "%A\n" result
+System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+    |> List.ofSeq
+    |> List.map (parse >> score)
+    |> List.sum
+    |> printfn "%A"

@@ -11,10 +11,9 @@ let rec splitlist sep xs =
                     | [] -> [[h]]
                     | h2 :: t2 -> (h :: h2) :: t2
 
-let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-                |> List.ofSeq
-                |> splitlist ""
-                |> List.map (fun xs -> xs |> List.map int |> List.sum)
-                |> List.max
-
-printf "%A\n" result
+System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+    |> List.ofSeq
+    |> splitlist ""
+    |> List.map (fun xs -> xs |> List.map int |> List.sum)
+    |> List.max
+    |> printfn "%A"

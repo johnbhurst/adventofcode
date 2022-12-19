@@ -16,9 +16,8 @@ let score line =
     | "C Z" -> 3 + 3
     | _ -> 0
 
-let result = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-                |> List.ofSeq
-                |> List.map score
-                |> List.sum
-
-printf "%A\n" result
+System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+    |> List.ofSeq
+    |> List.map score
+    |> List.sum
+    |> printfn "%A"
