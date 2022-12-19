@@ -2,6 +2,7 @@
 // Copyright 2022 John Hurst
 // John Hurst (john.b.hurst@gmail.com)
 // 2022-12-03
+//See https://adventofcode.com/2022/day/2
 
 let score line =
     match line with

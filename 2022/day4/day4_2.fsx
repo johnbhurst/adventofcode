@@ -2,6 +2,7 @@
 // Copyright 2022 John Hurst
 // John Hurst (john.b.hurst@gmail.com)
 // 2022-12-04
+//See https://adventofcode.com/2022/day/4
 
 let parse (line:string) =
     let pair = line.Split(',')

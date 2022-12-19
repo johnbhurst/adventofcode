@@ -2,6 +2,7 @@
 // Copyright 2022 John Hurst
 // John Hurst (john.b.hurst@gmail.com)
 // 2022-12-11
+// See https://adventofcode.com/2022/day/6
 
 let rec packetPos p l =
     match l with

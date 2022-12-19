@@ -2,6 +2,7 @@
 // Copyright 2022 John Hurst
 // John Hurst (john.b.hurst@gmail.com)
 // 2022-12-01
+//See https://adventofcode.com/2022/day/1
 
 let rec splitlist sep xs =
     match xs with
