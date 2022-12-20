@@ -13,6 +13,9 @@
 // @"^[0-9]+ [a-z]+\\.[a-z]+$"
 // @"^dir [a-z]+"$"
 
+type File = { Size: int; Name: string }
+type Dir = { Name: string; Files: File list; Dirs: Dir list }
+
 let (|CdUp|_|) str = if str = "$ cd .." then Some() else None
 
 let (|CdDir|_|) (str:string) = if str.StartsWith("$ cd ") then Some(str.Substring(5)) else None
@@ -30,35 +33,24 @@ let (|File|_|) (str:string) =
     else
         None
 
-type File = { Size: int; Name: string }
-type Dir = { Name: string; Files: File list; Dirs: Dir list }
-
 let rec parseDir lines =
     match lines with
-    | [] -> failwith "Expected 'cd dir', got end of input"
-    | line :: rest ->
-        match line with
-        | CdDir dirname -> parseLs dirname rest
-        | _ -> failwithf "Expected 'cd dir', got line: %s" line
+    | CdDir dirname :: rest -> parseLs dirname rest
+    | _ -> failwith "Expected 'cd dir'"
 and parseLs dirname lines =
     match lines with
-    | [] -> failwith "Expected 'ls', got end of input"
-    | line :: rest ->
-        match line with
-        | Ls -> parseEntries rest dirname [] []
-        | _ -> failwithf "Expecting 'ls', got line: %s" line
+    | Ls :: rest -> parseEntries rest dirname [] []
+    | _ -> failwith "Expected 'ls'"
 and parseEntries lines dirname files dirs =
     match lines with
+    | CdUp :: rest -> { Name = dirname; Files = files; Dirs = dirs}, rest
+    | Dir _ :: rest -> parseEntries rest dirname files dirs
+    | File (size, filename) :: rest -> parseEntries rest dirname ({ Size = size; Name = filename } :: files) dirs
+    | CdDir dir :: rest ->
+        let result, rest1 = parseDir lines
+        parseEntries rest1 dirname files (result :: dirs)
     | [] -> { Name = dirname; Files = files; Dirs = dirs}, []
-    | line :: rest ->
-        match line with
-        | CdUp -> { Name = dirname; Files = files; Dirs = dirs}, rest
-        | Dir _ -> parseEntries rest dirname files dirs
-        | File (size, filename) -> parseEntries rest dirname ({ Size = size; Name = filename } :: files) dirs
-        | CdDir dir ->
-            let result, rest1 = parseDir lines
-            parseEntries rest1 dirname files (result :: dirs)
-        | _ -> failwithf "Expected 'cd' or file/directory entry, got line: %s" line
+    | _ -> failwithf "Expected 'cd' or file/directory entry"
 
 let rec dirSize { Name = _; Files = files; Dirs = dirs } =
     let filesSize = files |> List.map (fun f -> f.Size) |> List.sum
