@@ -29,39 +29,41 @@ let (|File|_|) (str:string) =
     if parts.Length = 2 then
         let size = int parts.[0]
         let name = parts.[1]
-        Some(size, name)
+        Some( {Size = size; Name = name} )
     else
         None
 
 let rec parseDir lines =
     match lines with
-    | CdDir dirname :: rest -> parseLs rest dirname
+    | CdDir name :: rest -> parseLs rest name
     | _ -> failwith "Expected 'cd dir'"
-and parseLs lines dirname  =
+and parseLs lines name  =
     match lines with
-    | Ls :: rest -> parseEntries rest dirname [] []
+    | Ls :: rest -> parseEntries rest name [] []
     | _ -> failwith "Expected 'ls'"
-and parseEntries lines dirname files dirs =
+and parseEntries lines name files dirs =
     match lines with
-    | CdUp :: rest -> { Name = dirname; Files = files; Dirs = dirs}, rest
-    | Dir _ :: rest -> parseEntries rest dirname files dirs
-    | File (size, filename) :: rest ->
-        let file = { Size = size; Name = filename }
-        parseEntries rest dirname (file :: files) dirs
+    | CdUp :: rest -> { Name = name; Files = files; Dirs = dirs}, rest
+    | Dir _ :: rest -> parseEntries rest name files dirs
+    | File file :: rest ->
+        parseEntries rest name (file :: files) dirs
     | CdDir _ :: _ ->
-        let dir, rest1 = parseDir lines
-        parseEntries rest1 dirname files (dir :: dirs)
-    | [] -> { Name = dirname; Files = files; Dirs = dirs}, []
+        let dir, rest' = parseDir lines
+        parseEntries rest' name files (dir :: dirs)
+    | [] -> { Name = name; Files = files; Dirs = dirs}, []
     | _ -> failwithf "Expected 'cd' or file/directory entry"
 
+// total size of this directory and its children
 let rec dirSize { Name = _; Files = files; Dirs = dirs } =
     let filesSize = files |> List.map (fun f -> f.Size) |> List.sum
     let dirsSize = dirs |> List.map dirSize |> List.sum
     filesSize + dirsSize
 
+// list of total sizes of this directory and of each of its children
 let rec dirSizes dir =
     dirSize dir :: (List.map dirSizes dir.Dirs |> List.concat)
 
+// main program
 let dir, rest = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
                     |> List.ofSeq
                     |> parseDir
@@ -76,8 +78,9 @@ let usedSize = List.head sizes
 let freeSize = totalSize - usedSize
 let updateSize = 30000000
 let requiredSize = updateSize - freeSize
+let sufficientSize size = size > requiredSize
 
 sizes
-    |> List.filter (fun size -> size > requiredSize)
+    |> List.filter sufficientSize
     |> List.min
     |> printfn "%d"
