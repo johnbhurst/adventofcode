@@ -45,10 +45,12 @@ and parseEntries lines dirname files dirs =
     match lines with
     | CdUp :: rest -> { Name = dirname; Files = files; Dirs = dirs}, rest
     | Dir _ :: rest -> parseEntries rest dirname files dirs
-    | File (size, filename) :: rest -> parseEntries rest dirname ({ Size = size; Name = filename } :: files) dirs
-    | CdDir dir :: rest ->
-        let result, rest1 = parseDir lines
-        parseEntries rest1 dirname files (result :: dirs)
+    | File (size, filename) :: rest ->
+        let file = { Size = size; Name = filename }
+        parseEntries rest dirname (file :: files) dirs
+    | CdDir _ :: rest ->
+        let dir, rest1 = parseDir lines
+        parseEntries rest1 dirname files (dir :: dirs)
     | [] -> { Name = dirname; Files = files; Dirs = dirs}, []
     | _ -> failwithf "Expected 'cd' or file/directory entry"
 
