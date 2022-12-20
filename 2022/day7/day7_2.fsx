@@ -48,7 +48,7 @@ and parseEntries lines dirname files dirs =
     | File (size, filename) :: rest ->
         let file = { Size = size; Name = filename }
         parseEntries rest dirname (file :: files) dirs
-    | CdDir _ :: rest ->
+    | CdDir _ :: _ ->
         let dir, rest1 = parseDir lines
         parseEntries rest1 dirname files (dir :: dirs)
     | [] -> { Name = dirname; Files = files; Dirs = dirs}, []
