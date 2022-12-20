@@ -33,24 +33,25 @@ let (|File|_|) (str:string) =
     else
         None
 
+// functions to parse input lines as a directory tree
 let rec parseDir lines =
     match lines with
-    | CdDir name :: rest -> parseLs rest name
+    | CdDir name :: rest -> parseLs rest name    // after 'cd dir', expect 'ls'
     | _ -> failwith "Expected 'cd dir'"
 and parseLs lines name  =
     match lines with
-    | Ls :: rest -> parseEntries rest name [] []
+    | Ls :: rest -> parseEntries rest name [] [] // nothing to do for 'ls', expect a list of entries
     | _ -> failwith "Expected 'ls'"
 and parseEntries lines name files dirs =
     match lines with
-    | CdUp :: rest -> { Name = name; Files = files; Dirs = dirs}, rest
-    | Dir _ :: rest -> parseEntries rest name files dirs
+    | CdUp :: rest -> { Name = name; Files = files; Dirs = dirs}, rest // finished this subtree, return to continue with rest
+    | Dir _ :: rest -> parseEntries rest name files dirs // ignore 'dir' lines, assume we'll get 'cd' for them later
     | File file :: rest ->
-        parseEntries rest name (file :: files) dirs
+        parseEntries rest name (file :: files) dirs // add file to this directory
     | CdDir _ :: _ ->
         let dir, rest' = parseDir lines
-        parseEntries rest' name files (dir :: dirs)
-    | [] -> { Name = name; Files = files; Dirs = dirs}, []
+        parseEntries rest' name files (dir :: dirs) // add directory to this directory
+    | [] -> { Name = name; Files = files; Dirs = dirs}, [] // end of input, return this directory and finish
     | _ -> failwithf "Expected 'cd' or file/directory entry"
 
 // total size of this directory and its children
@@ -67,7 +68,7 @@ let rec dirSizes dir =
 let dir, rest = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
                     |> List.ofSeq
                     |> parseDir
-
+// should have reached end of input
 match rest with
 | [] -> ()
 | _ -> failwith "Expected end of input, got more lines"
@@ -79,7 +80,7 @@ let freeSize = totalSize - usedSize
 let updateSize = 30000000
 let requiredSize = updateSize - freeSize
 let sufficientSize size = size > requiredSize
-
+// result is minimum of all sufficient sizes
 sizes
     |> List.filter sufficientSize
     |> List.min
