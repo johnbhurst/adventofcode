@@ -4,14 +4,14 @@
 // 2022-12-11
 // See https://adventofcode.com/2022/day/7
 
-// lines match one of these regexes:
-// @"^\$ cd /$"
-// @"^\$ cd [a-z]+$"
-// @"^\$ cd ..$"
-// @"^\$ ls$"
-// @"^[0-9]+ [a-z]+$"
-// @"^[0-9]+ [a-z]+\\.[a-z]+$"
-// @"^dir [a-z]+"$"
+// lines match one of these patterns:
+// $ cd /
+// $ cd [a-z]+
+// $ cd ..
+// $ ls
+// [0-9]+ [a-z]+
+// [0-9]+ [a-z]+\\.[a-z]+
+// dir [a-z]+
 
 type File = { Size: int; Name: string }
 type Dir = { Name: string; Files: File list; Dirs: Dir list }
