@@ -35,9 +35,9 @@ let (|File|_|) (str:string) =
 
 let rec parseDir lines =
     match lines with
-    | CdDir dirname :: rest -> parseLs dirname rest
+    | CdDir dirname :: rest -> parseLs rest dirname
     | _ -> failwith "Expected 'cd dir'"
-and parseLs dirname lines =
+and parseLs lines dirname  =
     match lines with
     | Ls :: rest -> parseEntries rest dirname [] []
     | _ -> failwith "Expected 'ls'"
