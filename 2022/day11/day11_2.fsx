@@ -116,5 +116,9 @@ let doMonkey (monkey:Monkey) =
 for round in 1..10000 do
     monkeys |> List.iter doMonkey
 
-let topInspections = inspections |> Array.sortDescending |> Array.take 2 |> Array.map bigint
-printfn "%A" (topInspections.[0] * topInspections.[1])
+inspections
+    |> Array.sortDescending
+    |> Array.take 2
+    |> Array.map bigint
+    |> Array.reduce (fun x y -> x * y)
+    |> printfn "%A"
