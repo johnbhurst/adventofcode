@@ -99,7 +99,7 @@ let inspections = Array.zeroCreate<int> (List.length monkeys)
 
 // apply the operation to an item's remainder map to get an updated remainder map
 let applyOperation (operation: int -> int -> int) (remainderMap:Map<int, int>) =
-    remainderMap.Keys |> Seq.map (fun x -> x, operation x remainderMap.[x]) |> Map
+    remainderMap.Keys |> Seq.map (fun divisor -> divisor, operation divisor remainderMap.[divisor]) |> Map
 
 // process an item on a monkey
 let doItem (monkey:Monkey) (remainderMap:Map<int, int>) =
