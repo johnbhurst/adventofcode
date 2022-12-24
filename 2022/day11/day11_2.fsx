@@ -63,12 +63,17 @@ let inspections = Array.zeroCreate<int> (List.length monkeys)
 
 // process all the items for a monkey
 let doMonkey (monkey:Monkey) =
-    let doItem (remainderMap:Map<int, int>) =
+    // let doItem (remainderMap:Map<int, int>) =
+    //     inspections.[monkey.Monkey] <- inspections.[monkey.Monkey] + 1
+    //     let updatedRemainderMap = remainderMap.Keys |> Seq.map (fun divisor -> divisor, monkey.Operation divisor remainderMap.[divisor]) |> Map
+    //     let target = if updatedRemainderMap.[monkey.TestDivisible] = 0 then monkey.IfTrue else monkey.IfFalse
+    //     monkeyRemainderMaps.[target] <- monkeyRemainderMaps.[target] @ [updatedRemainderMap]
+    monkeyRemainderMaps.[monkey.Monkey] |> List.iter (fun remainderMap ->
         inspections.[monkey.Monkey] <- inspections.[monkey.Monkey] + 1
         let updatedRemainderMap = remainderMap.Keys |> Seq.map (fun divisor -> divisor, monkey.Operation divisor remainderMap.[divisor]) |> Map
         let target = if updatedRemainderMap.[monkey.TestDivisible] = 0 then monkey.IfTrue else monkey.IfFalse
         monkeyRemainderMaps.[target] <- monkeyRemainderMaps.[target] @ [updatedRemainderMap]
-    monkeyRemainderMaps.[monkey.Monkey] |> List.iter doItem
+    )
     monkeyRemainderMaps.[monkey.Monkey] <- []
 
 for round in 1..10000 do
