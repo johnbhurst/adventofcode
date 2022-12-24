@@ -61,20 +61,14 @@ let monkeyRemainderMaps =
 // (mutable) array of the number of items inspected by each monkey
 let inspections = Array.zeroCreate<int> (List.length monkeys)
 
-// apply the operation to an item's remainder map to get an updated remainder map
-let applyOperation (operation: int -> int -> int) (remainderMap:Map<int, int>) =
-    remainderMap.Keys |> Seq.map (fun divisor -> divisor, operation divisor remainderMap.[divisor]) |> Map
-
-// process an item on a monkey
-let doItem (monkey:Monkey) (remainderMap:Map<int, int>) =
-    inspections.[monkey.Monkey] <- inspections.[monkey.Monkey] + 1
-    let updatedRemainderMap = applyOperation monkey.Operation remainderMap
-    let target = if updatedRemainderMap.[monkey.TestDivisible] = 0 then monkey.IfTrue else monkey.IfFalse
-    monkeyRemainderMaps.[target] <- monkeyRemainderMaps.[target] @ [updatedRemainderMap]
-
 // process all the items for a monkey
 let doMonkey (monkey:Monkey) =
-    monkeyRemainderMaps.[monkey.Monkey] |> List.iter (doItem monkey)
+    let doItem (remainderMap:Map<int, int>) =
+        inspections.[monkey.Monkey] <- inspections.[monkey.Monkey] + 1
+        let updatedRemainderMap = remainderMap.Keys |> Seq.map (fun divisor -> divisor, monkey.Operation divisor remainderMap.[divisor]) |> Map
+        let target = if updatedRemainderMap.[monkey.TestDivisible] = 0 then monkey.IfTrue else monkey.IfFalse
+        monkeyRemainderMaps.[target] <- monkeyRemainderMaps.[target] @ [updatedRemainderMap]
+    monkeyRemainderMaps.[monkey.Monkey] |> List.iter doItem
     monkeyRemainderMaps.[monkey.Monkey] <- []
 
 for round in 1..10000 do
