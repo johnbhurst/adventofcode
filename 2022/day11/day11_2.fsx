@@ -78,5 +78,5 @@ inspections
     |> Array.sortDescending
     |> Array.take 2
     |> Array.map bigint
-    |> Array.reduce (fun x y -> x * y)
+    |> Array.reduce (*)
     |> printfn "%A"
