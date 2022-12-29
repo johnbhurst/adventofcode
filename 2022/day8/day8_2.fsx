@@ -15,7 +15,7 @@ let heights = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] ) |> array2D
 let rows = Array2D.length1 heights
 let cols = Array2D.length2 heights
 
-let scores = seq {
+seq {
     for i in 1 .. rows - 2 do
         for j in 1 .. cols - 2 do
             let colValueGreaterEqual x = heights[i,x] >= heights[i,j]
@@ -25,6 +25,5 @@ let scores = seq {
             let topScore = countUntil rowValueGreaterEqual (seq { i-1 .. -1 .. 0 })
             let bottomScore = countUntil rowValueGreaterEqual (seq { i+1 .. rows-1 })
             yield leftScore * rightScore * topScore * bottomScore
-    }
-let result = Seq.max scores
-printfn "%d" result
+} |> Seq.max
+  |> printfn "%d"
