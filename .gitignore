@@ -21,6 +21,7 @@ advent_day10_1
 advent_day10_2
 bin/
 obj/
+*.in
 *.hi
 *.o
 .fake
