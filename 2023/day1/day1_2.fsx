@@ -6,28 +6,27 @@
 
 open System
 
-let rec repl (line:list<char>) =
+let rec replaceDigits line =
     match List.ofSeq line with
-    | 'o' :: 'n' :: 'e' :: rest -> '1' :: repl ('e' :: rest)
-    | 't' :: 'w' :: 'o' :: rest -> '2' :: repl ('o' :: rest)
-    | 't' :: 'h' :: 'r' :: 'e' :: 'e' :: rest -> '3' :: repl ('e' :: rest)
-    | 'f' :: 'o' :: 'u' :: 'r' :: rest -> '4' :: repl rest
-    | 'f' :: 'i' :: 'v' :: 'e' :: rest -> '5' :: repl ('e' :: rest)
-    | 's' :: 'i' :: 'x' :: rest -> '6' :: repl rest
-    | 's' :: 'e' :: 'v' :: 'e' :: 'n' :: rest -> '7' :: repl ('n' :: rest)
-    | 'e' :: 'i' :: 'g' :: 'h' :: 't' :: rest -> '8' :: repl ('t' :: rest)
-    | 'n' :: 'i' :: 'n' :: 'e' :: rest -> '9' :: repl ('e' :: rest)
-    // | 'z' :: 'e' :: 'r' :: 'o' :: rest -> '0' :: repl rest
-    | c :: rest -> c :: repl rest
+    | 'o' :: 'n' :: 'e' :: rest -> '1' :: replaceDigits ('e' :: rest)
+    | 't' :: 'w' :: 'o' :: rest -> '2' :: replaceDigits ('o' :: rest)
+    | 't' :: 'h' :: 'r' :: 'e' :: 'e' :: rest -> '3' :: replaceDigits ('e' :: rest)
+    | 'f' :: 'o' :: 'u' :: 'r' :: rest -> '4' :: replaceDigits rest
+    | 'f' :: 'i' :: 'v' :: 'e' :: rest -> '5' :: replaceDigits ('e' :: rest)
+    | 's' :: 'i' :: 'x' :: rest -> '6' :: replaceDigits rest
+    | 's' :: 'e' :: 'v' :: 'e' :: 'n' :: rest -> '7' :: replaceDigits ('n' :: rest)
+    | 'e' :: 'i' :: 'g' :: 'h' :: 't' :: rest -> '8' :: replaceDigits ('t' :: rest)
+    | 'n' :: 'i' :: 'n' :: 'e' :: rest -> '9' :: replaceDigits ('e' :: rest)
+    | c :: rest -> c :: replaceDigits rest
     | [] -> []
 
-let dig c = (int c) - (int '0')
+let toDigit c = (int c) - (int '0')
 
 System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
     |> Seq.map List.ofSeq
-    |> Seq.map repl
-    |> Seq.map (fun line -> Seq.filter (fun c -> Char.IsDigit c) line)
-    |> Seq.map (fun line -> Seq.map dig line)
+    |> Seq.map replaceDigits
+    |> Seq.map (Seq.filter Char.IsDigit)
+    |> Seq.map (Seq.map toDigit)
     |> Seq.map List.ofSeq
     |> Seq.map (fun list -> 10 * List.head list + List.last list)
     |> Seq.sum

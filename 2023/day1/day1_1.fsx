@@ -6,11 +6,11 @@
 
 open System
 
-let dig c = (int c) - (int '0')
+let toDigit c = (int c) - (int '0')
 
 System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-    |> Seq.map (fun line -> Seq.filter (fun c -> Char.IsDigit c) line)
-    |> Seq.map (fun line -> Seq.map dig line)
+    |> Seq.map (Seq.filter Char.IsDigit)
+    |> Seq.map (Seq.map toDigit)
     |> Seq.map List.ofSeq
     |> Seq.map (fun list -> 10 * List.head list + List.last list)
     |> Seq.sum
