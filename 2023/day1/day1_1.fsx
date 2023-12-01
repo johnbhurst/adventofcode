@@ -8,10 +8,9 @@ open System
 
 let toDigit c = (int c) - (int '0')
 
+let calibrationValue digits = 10 * List.head digits + List.last digits
+
 System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-    |> Seq.map (Seq.filter Char.IsDigit)
-    |> Seq.map (Seq.map toDigit)
-    |> Seq.map List.ofSeq
-    |> Seq.map (fun list -> 10 * List.head list + List.last list)
+    |> Seq.map ((Seq.filter Char.IsDigit) >> (Seq.map toDigit) >> List.ofSeq >> calibrationValue)
     |> Seq.sum
     |> printfn "%A"
