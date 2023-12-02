@@ -4,7 +4,6 @@
 // 2023-12-03
 // See https://adventofcode.com/2023/day/2
 
-open System
 open System.Text.RegularExpressions
 
 type Combo = { Red: int; Green: int; Blue: int}
