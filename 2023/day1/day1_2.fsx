@@ -24,7 +24,7 @@ let toDigit c = (int c) - (int '0')
 
 let calibrationValue digits = 10 * Seq.head digits + Seq.last digits
 
-System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+IO.File.ReadLines( fsi.CommandLineArgs.[1] )
     |> Seq.map (List.ofSeq >> replaceDigits >> Seq.filter Char.IsDigit >> Seq.map toDigit >> calibrationValue)
     |> Seq.sum
     |> printfn "%A"
