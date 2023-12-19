@@ -20,8 +20,10 @@ let rec matchNums row offset line =
     else
         []
 
+let lines = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] ) |> Array.ofSeq
+
 // check if a number is adjacent to a symbol
-let adjacentSymbol lines num =
+let adjacentSymbol num =
     let isValid (row, col) =
         row >= 0 && row < Array.length lines && col >= 0 && col < String.length lines.[row]
     let isSymbol (row, col) =
@@ -33,17 +35,10 @@ let adjacentSymbol lines num =
                 |> Seq.filter isValid
                 |> Seq.exists isSymbol
 
-let lines = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] ) |> Array.ofSeq
-let adjacentFilter = adjacentSymbol (Array.ofSeq lines)
 let nums = lines
         |> Seq.mapi (fun row line -> matchNums row 0 line)
         |> Seq.concat
-        |> Seq.filter adjacentFilter
-
-let starPositions = seq { for row in 0 .. Array.length lines - 1 do
-                            for col in 0 .. String.length lines.[row] - 1 do
-                                yield ( row, col ) }
-                                |> Seq.filter (fun (row, col) -> lines.[row].[col] = '*')
+        |> Seq.filter adjacentSymbol
 
 let adjacentNum (row, col) num =
     row >= num.row - 1 && row <= num.row + 1 && col >= num.col - 1 && col <= num.col + String.length num.num
@@ -51,10 +46,13 @@ let adjacentNum (row, col) num =
 let adjacentNums position =
     nums |> Seq.filter (adjacentNum position)
 
-starPositions
-            |> Seq.map adjacentNums
-            |> Seq.filter (fun nums -> Seq.length nums = 2)
-            |> Seq.map (fun nums -> nums |> Seq.map (fun num -> int num.num))
-            |> Seq.map (fun nums -> nums |> Seq.reduce (fun a b -> a * b))
-            |> Seq.sumBy int
-            |> printfn "%A"
+seq { for row in 0 .. Array.length lines - 1 do
+                            for col in 0 .. String.length lines.[row] - 1 do
+                                yield ( row, col ) }
+    |> Seq.filter (fun (row, col) -> lines.[row].[col] = '*')
+    |> Seq.map adjacentNums
+    |> Seq.filter (fun nums -> Seq.length nums = 2)
+    |> Seq.map (fun nums -> nums |> Seq.map (fun num -> int num.num))
+    |> Seq.map (fun nums -> nums |> Seq.reduce (fun a b -> a * b))
+    |> Seq.sumBy int
+    |> printfn "%A"

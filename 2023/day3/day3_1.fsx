@@ -20,8 +20,10 @@ let rec matchNums row offset line =
     else
         []
 
+let lines = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] ) |> Array.ofSeq
+
 // check if a number is adjacent to a symbol
-let adjacentSymbol lines num =
+let adjacentSymbol num =
     let isValid (row, col) =
         row >= 0 && row < Array.length lines && col >= 0 && col < String.length lines.[row]
     let isSymbol (row, col) =
@@ -33,12 +35,10 @@ let adjacentSymbol lines num =
                 |> Seq.filter isValid
                 |> Seq.exists isSymbol
 
-let lines = System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-let adjacentFilter = adjacentSymbol (Array.ofSeq lines)
 lines
     |> Seq.mapi (fun row line -> matchNums row 0 line)
     |> Seq.concat
-    |> Seq.filter adjacentFilter
+    |> Seq.filter adjacentSymbol
     |> Seq.map (fun num -> num.num)
     |> Seq.sumBy int
     |> printfn "%A"
