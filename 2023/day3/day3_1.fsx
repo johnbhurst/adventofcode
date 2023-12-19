@@ -10,8 +10,8 @@ open System.Text.RegularExpressions
 type Num = { num: string; row: int; col: int }
 
 // extract numbers and positions from an input line
-let rec matchNums row offset s =
-    let m = Regex.Match(s, @"^([^\d]*)(\d+)(.*)$")
+let rec matchNums row offset line =
+    let m = Regex.Match(line, @"^([^\d]*)(\d+)(.*)$")
     if m.Success then
         let col = offset + String.length m.Groups.[1].Value
         let num = m.Groups.[2].Value
@@ -21,7 +21,7 @@ let rec matchNums row offset s =
         []
 
 // check if a number is adjacent to a symbol
-let adjacentSymbol (lines: string array) (num: Num) =
+let adjacentSymbol lines num =
     let isValid (row, col) =
         row >= 0 && row < Array.length lines && col >= 0 && col < String.length lines.[row]
     let isSymbol (row, col) =
