@@ -4,7 +4,6 @@
 // 2023-12-20
 // See https://adventofcode.com/2023/day/4
 
-open System
 open System.Text.RegularExpressions
 
 let parseNums line =
