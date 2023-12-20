@@ -16,9 +16,10 @@ let parseNums line =
         ([], [])
 
 let rec score n =
-    if n = 0 then 0
-    else if n = 1 then 1
-    else 2 * score (n-1)
+    match n with
+    | 0 -> 0
+    | 1 -> 1
+    | _ -> 2 * score (n-1)
 
 System.IO.File.ReadLines( fsi.CommandLineArgs.[1] )
     |> Seq.map parseNums
