@@ -19,7 +19,7 @@ advent_day9_1
 advent_day9_2
 advent_day10_1
 advent_day10_2
-bin/
+# bin/
 obj/
 *.in
 *.hi
