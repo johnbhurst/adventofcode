@@ -8,14 +8,14 @@ open System
 
 let parsePair (line:string) =
     let parts = line.Split("   ")
-    parts.[0], parts.[1]
+    int(parts.[0]), int(parts.[1])
 
 let distBetween (a:int, b:int) = Math.Abs(a - b)
 
 let pairs = IO.File.ReadLines( fsi.CommandLineArgs.[1] ) |> Seq.map parsePair
 
-let left = pairs |> Seq.map (fun (a, b) -> a |> int) |> Seq.sort
-let right = pairs |> Seq.map (fun (a, b) -> b |> int) |> Seq.sort
+let left = pairs |> Seq.map fst |> Seq.sort
+let right = pairs |> Seq.map snd |> Seq.sort
 
 Seq.zip left right |> Seq.map distBetween
     |> Seq.sum
