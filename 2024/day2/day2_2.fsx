@@ -31,7 +31,7 @@ let safe data =
 // map [v1; v2; v3] to [[v1; v2; v3]; [v2; v3]; [v1; v3]; [v1; v2]]
 // i.e. original list plus all sublists with one element removed
 let removeOne data =
-    data :: List.mapi (fun i _ -> List.take i data @ List.skip (i+1) data) data
+    data :: List.mapi (fun i _ -> List.removeAt i data) data
 
 // return true if any sublist is safe
 let safeOne data =
