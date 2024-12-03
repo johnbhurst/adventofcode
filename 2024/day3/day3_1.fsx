@@ -18,8 +18,8 @@ let rec parseMul (s:string) =
         []
 
 IO.File.ReadLines( fsi.CommandLineArgs.[1] )
-    |> Seq.map parseMul
     |> List.ofSeq
-    |> List.concat
+    |> String.concat ""
+    |> parseMul
     |> List.sum
     |> printfn "%A"
