@@ -8,7 +8,7 @@ open System
 open System.Text.RegularExpressions
 
 let rec parseMul (s:string) =
-    let m = Regex.Match(s, @"mul\(([0-9]{1,3}),([0-9]{1,3})\)(.*)")
+    let m = Regex.Match(s, @"mul\((\d{1,3}),(\d{1,3})\)(.*)")
     if m.Success then
         let a = int m.Groups.[1].Value
         let b = int m.Groups.[2].Value

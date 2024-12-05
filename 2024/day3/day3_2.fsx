@@ -8,7 +8,7 @@ open System
 open System.Text.RegularExpressions
 
 let rec parseMul (s:string) =
-    let m = Regex.Match(s, @"(don't\(\))(.*)|mul\(([0-9]{1,3}),([0-9]{1,3})\)(.*)")
+    let m = Regex.Match(s, @"(don't\(\))(.*)|mul\((\d{1,3}),(\d{1,3})\)(.*)")
     if m.Success then
         if m.Groups.[1].Value = "don't()" then
             parseNoMul m.Groups.[2].Value
