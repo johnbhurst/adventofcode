@@ -4,36 +4,41 @@
 // 2024-12-06
 // See https://adventofcode.com/2024/day/5
 
-// 47|53
-// 97|13
-// 97|61
-// 97|47
-// 75|29
-// 61|13
-// 75|53
-// 29|13
-// 97|29
-// 53|29
-// 61|53
-// 97|53
-// 61|29
-// 47|13
-// 75|47
-// 97|75
-// 47|61
-// 75|61
-// 47|29
-// 75|13
-// 53|13
-
-// 75,47,61,53,29
-// 97,61,53,29,13
-// 75,29,13
-// 75,97,47,61,53
-// 61,13,29
-// 97,13,75,29,47
-
 open System
+
+let testInput = """47|53
+97|13
+97|61
+97|47
+75|29
+61|13
+75|53
+29|13
+97|29
+53|29
+61|53
+97|53
+61|29
+47|13
+75|47
+97|75
+47|61
+75|61
+47|29
+75|13
+53|13
+
+75,47,61,53,29
+97,61,53,29,13
+75,29,13
+75,97,47,61,53
+61,13,29
+97,13,75,29,47"""
+
+// if there is a command-line argument, read the lines in the file as inputLines, otherwise set it as a sequence of lines from testInput:
+let inputLines = if fsi.CommandLineArgs.Length > 1
+                    then IO.File.ReadLines(fsi.CommandLineArgs.[1])
+                    else testInput.Split('\n')
 
 // split list of lines into list of rules and list of updates, with a blank line separating them
 let rec splitLines lines =
@@ -43,7 +48,7 @@ let rec splitLines lines =
                       (line :: rules, updates)
     | [] -> ([], [])
 
-let ruleLines, updateLines = IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+let ruleLines, updateLines = inputLines
                                 |> Seq.toList
                                 |> splitLines
 
