@@ -20,10 +20,10 @@ let parsePair (line:string) =
 
 let distBetween (a:int, b:int) = System.Math.Abs(a - b)
 
-let pairs = input |> Seq.map parsePair
-let left = pairs |> Seq.map fst |> Seq.sort
-let right = pairs |> Seq.map snd |> Seq.sort
+let pairs = input |> Seq.map parsePair       // seq [(3, 4); (4, 3); (2, 5); (1, 3); (3, 9); (3, 3)]
+let left = pairs |> Seq.map fst |> Seq.sort  // seq [1; 2; 3; 3; 3; 4]
+let right = pairs |> Seq.map snd |> Seq.sort // seq [3; 3; 3; 4; 5; 9]
 
-Seq.zip left right |> Seq.map distBetween
-    |> Seq.sum
+Seq.zip left right |> Seq.map distBetween    // seq [2; 1; 0; 1; 2; 5]
+    |> Seq.sum                               // 11
     |> printfn "%A"
