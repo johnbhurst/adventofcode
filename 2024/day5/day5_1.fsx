@@ -4,9 +4,10 @@
 // 2024-12-06
 // See https://adventofcode.com/2024/day/5
 
-open System
-
-let testInput = """47|53
+let input =
+    if fsi.CommandLineArgs.Length > 1
+        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+        else ("""47|53
 97|13
 97|61
 97|47
@@ -33,12 +34,7 @@ let testInput = """47|53
 75,29,13
 75,97,47,61,53
 61,13,29
-97,13,75,29,47"""
-
-// if there is a command-line argument, read the lines in the file as inputLines, otherwise set it as a sequence of lines from testInput:
-let inputLines = if fsi.CommandLineArgs.Length > 1
-                    then IO.File.ReadLines(fsi.CommandLineArgs.[1])
-                    else testInput.Split('\n')
+97,13,75,29,47""".Split('\n'))
 
 // split list of lines into list of rules and list of updates, with a blank line separating them
 let rec splitLines lines =
@@ -48,9 +44,10 @@ let rec splitLines lines =
                       (line :: rules, updates)
     | [] -> ([], [])
 
-let ruleLines, updateLines = inputLines
-                                |> Seq.toList
-                                |> splitLines
+let ruleLines, updateLines =
+    input
+    |> Seq.toList
+    |> splitLines
 
 let parseRule (line:string) =
     let parts = line.Split('|')

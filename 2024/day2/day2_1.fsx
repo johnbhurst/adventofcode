@@ -4,7 +4,15 @@
 // 2024-12-02
 // See https://adventofcode.com/2024/day/2
 
-open System
+let input =
+    if fsi.CommandLineArgs.Length > 1
+        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+        else ("""7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9""".Split('\n'))
 
 let parseData (line:string) =
     line.Split(" ")
@@ -28,7 +36,7 @@ let safe data =
                                else false
     | _ -> false
 
-IO.File.ReadLines( fsi.CommandLineArgs.[1] )
+input
     |> Seq.map parseData  // seq { [1; 2; 3]; [4; 5; 6]; ... }
     |> Seq.map safe       // seq { true; false; ... }
     |> Seq.filter id      // seq { true; ... }

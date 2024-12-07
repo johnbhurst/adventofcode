@@ -4,21 +4,29 @@
 // 2024-12-02
 // See https://adventofcode.com/2024/day/1
 
-open System
+let input =
+    if fsi.CommandLineArgs.Length > 1
+        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+        else ("""3   4
+4   3
+2   5
+1   3
+3   9
+3   3""".Split('\n'))
 
 let parsePair (line:string) =
     let parts = line.Split("   ")
     int(parts.[0]), int(parts.[1])
 
-let pairs = IO.File.ReadLines( fsi.CommandLineArgs.[1] ) |> Seq.map parsePair
-
+let pairs = input |> Seq.map parsePair
 let left = pairs |> Seq.map fst |> Seq.sort
 let right = pairs |> Seq.map snd |> Seq.sort
 
-let rightCounts = right
-                    |> Seq.groupBy (fun v -> v)
-                    |> Seq.map (fun (k, v) -> (k, List.ofSeq(v).Length))
-                    |> Map.ofSeq
+let rightCounts =
+    right
+    |> Seq.groupBy (fun v -> v)
+    |> Seq.map (fun (k, v) -> (k, List.ofSeq(v).Length))
+    |> Map.ofSeq
 
 left |> Seq.map (fun v -> v * (Map.tryFind v rightCounts|> Option.defaultValue 0))
      |> Seq.sum
