@@ -24,9 +24,9 @@ let right = pairs |> Seq.map snd |> Seq.sort // seq [3; 3; 3; 4; 5; 9]
 
 let rightCounts =
     right
-    |> Seq.groupBy (fun v -> v)                          // seq [(3, seq [3; 3; 3]); (4, seq [4]); (5, seq [5]); (9, seq [9])]
-    |> Seq.map (fun (k, v) -> (k, List.ofSeq(v).Length)) // seq [(3, 3); (4, 1); (5, 1); (9, 1)]
-    |> Map.ofSeq                                         // map [(3, 3); (4, 1); (5, 1); (9, 1)]
+    |> Seq.groupBy (fun v -> v)                  // seq [(3, seq [3; 3; 3]); (4, seq [4]); (5, seq [5]); (9, seq [9])]
+    |> Seq.map (fun (k, v) -> (k, Seq.length v)) // seq [(3, 3); (4, 1); (5, 1); (9, 1)]
+    |> Map.ofSeq                                 // map [(3, 3); (4, 1); (5, 1); (9, 1)]
 
 left |> Seq.map (fun v -> v * (Map.tryFind v rightCounts|> Option.defaultValue 0)) // seq [0; 0; 9; 9; 9; 4]
      |> Seq.sum                                                                    // 31
