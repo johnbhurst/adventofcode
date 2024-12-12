@@ -36,8 +36,8 @@ let cols = Array2D.length2 grid
 let pairs = seq { for i in 1..rows-2 do for j in 1..cols-2 do yield i, j } |> List.ofSeq
 
 let xmas (i, j) =
-    if grid[i, j] <> 'A' then false
-    else (grid[i-1,j-1] = 'M' && grid[i+1,j+1] = 'S' || grid[i-1,j-1] = 'S' && grid[i+1,j+1] = 'M')
+    grid[i, j] = 'A'
+      && (grid[i-1,j-1] = 'M' && grid[i+1,j+1] = 'S' || grid[i-1,j-1] = 'S' && grid[i+1,j+1] = 'M')
       && (grid[i-1,j+1] = 'M' && grid[i+1,j-1] = 'S' || grid[i-1,j+1] = 'S' && grid[i+1,j-1] = 'M')
 
 pairs

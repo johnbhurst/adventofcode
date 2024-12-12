@@ -38,14 +38,15 @@ let pairs = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j } |> Li
 let getstring i j ioffset joffset =
     [|grid.[i, j]; grid.[i+ioffset, j+joffset]; grid.[i+2*ioffset, j+2*joffset]; grid.[i+3*ioffset, j+3*joffset]|]
     |> System.String
-let right i j     = if               j > cols-4 then false else getstring i j +0 +1 = "XMAS"
-let downright i j = if i > rows-4 || j > cols-4 then false else getstring i j +1 +1 = "XMAS"
-let down i j      = if i > rows-4               then false else getstring i j +1 +0 = "XMAS"
-let downleft i j  = if i > rows-4 || j < 3      then false else getstring i j +1 -1 = "XMAS"
-let left i j      = if               j < 3      then false else getstring i j +0 -1 = "XMAS"
-let upleft i j    = if i < 3      || j < 3      then false else getstring i j -1 -1 = "XMAS"
-let up i j        = if i < 3                    then false else getstring i j -1 +0 = "XMAS"
-let upright i j   = if i < 3      || j > cols-4 then false else getstring i j -1 +1 = "XMAS"
+
+let right i j     =                j <= cols-4 && getstring i j +0 +1 = "XMAS"
+let downright i j = i <= rows-4 && j <= cols-4 && getstring i j +1 +1 = "XMAS"
+let down i j      = i <= rows-4                && getstring i j +1 +0 = "XMAS"
+let downleft i j  = i <= rows-4 && j >= 3      && getstring i j +1 -1 = "XMAS"
+let left i j      =                j >= 3      && getstring i j +0 -1 = "XMAS"
+let upleft i j    = i >= 3      && j >= 3      && getstring i j -1 -1 = "XMAS"
+let up i j        = i >= 3                     && getstring i j -1 +0 = "XMAS"
+let upright i j   = i >= 3      && j <= cols-4 && getstring i j -1 +1 = "XMAS"
 
 [right; downright; down; downleft; left; upleft; up; upright]
     |> List.collect (fun test -> pairs |> List.filter (fun (i, j) -> test i j) )
