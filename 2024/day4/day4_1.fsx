@@ -36,7 +36,7 @@ let cols = Array2D.length2 grid
 let pairs = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j } |> List.ofSeq
 
 let getstring i j ioffset joffset =
-    [|grid.[i, j]; grid.[i+ioffset, j+joffset]; grid.[i+2*ioffset, j+2*joffset]; grid.[i+3*ioffset, j+3*joffset]|]
+    [|grid[i, j]; grid[i+ioffset, j+joffset]; grid[i+2*ioffset, j+2*joffset]; grid[i+3*ioffset, j+3*joffset]|]
     |> System.String
 
 let right i j     =                j <= cols-4 && getstring i j +0 +1 = "XMAS"
