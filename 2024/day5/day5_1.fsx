@@ -69,8 +69,6 @@ let updates = updateLines |> List.map parseUpdate
 
 let rec ruleOk page rest (page1, page2) =
     page <> page2 || not (List.contains page1 rest)
-    // if page <> page2 then true // rule doesn't apply
-    // else not (List.contains page1 rest)
 
 let updateOk updates =
     match updates with
