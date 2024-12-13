@@ -22,22 +22,22 @@ let grid = array2D input
 let rows = Array2D.length1 grid
 let cols = Array2D.length2 grid
 
-let rec moveUp (position: int*int) (positions: Set<int*int>) =
+let rec moveUp position positions =
     let (i, j) = position
     if i = 0 then positions
     elif grid[i-1, j] = '#' then moveRight position positions
     else moveUp (i-1, j) (Set.add (i-1, j) positions)
-and moveRight (position: int*int) (positions: Set<int*int>) =
+and moveRight position positions =
     let (i, j) = position
     if j = cols-1 then positions
     elif grid[i, j+1] = '#' then moveDown position positions
     else moveRight (i, j+1) (Set.add (i, j+1) positions)
-and moveDown (position: int*int) (positions: Set<int*int>) =
+and moveDown position positions =
     let (i, j) = position
     if i = rows-1 then positions
     elif grid[i+1, j] = '#' then moveLeft position positions
     else moveDown (i+1, j) (Set.add (i+1, j) positions)
-and moveLeft (position: int*int) (positions: Set<int*int>) =
+and moveLeft position positions =
     let (i, j) = position
     if j = 0 then positions
     elif grid[i, j-1] = '#' then moveUp position positions
