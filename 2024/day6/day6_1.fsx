@@ -19,11 +19,8 @@ let input =
 ......#...""".Split('\n'))
 
 let grid = array2D input
-
 let rows = Array2D.length1 grid
 let cols = Array2D.length2 grid
-let coords = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j } |> List.ofSeq
-let start = coords |> List.find (fun (i, j) -> grid[i, j] = '^')
 
 let rec moveUp (position: int*int) (positions: Set<int*int>) =
     let (i, j) = position
@@ -45,6 +42,10 @@ and moveLeft (position: int*int) (positions: Set<int*int>) =
     if j = 0 then positions
     elif grid[i, j-1] = '#' then moveUp position positions
     else moveLeft (i, j-1) (Set.add (i, j-1) positions)
+
+let start =
+    seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j }
+    |> Seq.find (fun (i, j) -> grid[i, j] = '^')
 
 moveUp start (Set.singleton start)
     |> Set.count
