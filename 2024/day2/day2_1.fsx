@@ -4,7 +4,7 @@
 // 2024-12-02
 // See https://adventofcode.com/2024/day/2
 
-let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs[1])
 
 let parseData (line:string) =
     line.Split(" ")

@@ -4,7 +4,7 @@
 // 2024-12-13
 // See https://adventofcode.com/2024/day/4
 
-let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs[1])
 
 let grid = array2D input
 // [['M'; 'M'; 'M'; 'S'; 'X'; 'X'; 'M'; 'A'; 'S'; 'M']

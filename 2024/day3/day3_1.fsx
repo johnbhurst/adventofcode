@@ -6,14 +6,14 @@
 
 open System.Text.RegularExpressions
 
-let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs[1])
 
 let rec parseMul (s:string) =
     let m = Regex.Match(s, @"mul\((\d{1,3}),(\d{1,3})\)(.*)")
     if m.Success then
-        let a = int m.Groups.[1].Value
-        let b = int m.Groups.[2].Value
-        let rest = m.Groups.[3].Value
+        let a = int m.Groups[1].Value
+        let b = int m.Groups[2].Value
+        let rest = m.Groups[3].Value
         a * b :: (parseMul rest)
     else
         []

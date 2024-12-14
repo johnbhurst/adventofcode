@@ -4,7 +4,7 @@
 // 2024-12-06
 // See https://adventofcode.com/2024/day/5
 
-let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs[1])
 
 // split list of lines into list of rules and list of updates, with a blank line separating them
 let rec splitLines lines =
@@ -21,8 +21,8 @@ let ruleLines, updateLines =
 
 let parseRule (line:string) =
     let parts = line.Split('|')
-    let part1 = int(parts.[0])
-    let part2 = int(parts.[1])
+    let part1 = int(parts[0])
+    let part2 = int(parts[1])
     (part1, part2)
 
 let parseUpdate (line:string) =

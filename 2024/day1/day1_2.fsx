@@ -4,11 +4,11 @@
 // 2024-12-02
 // See https://adventofcode.com/2024/day/1
 
-let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs[1])
 
 let parsePair (line:string) =
     let parts = line.Split("   ")
-    int(parts.[0]), int(parts.[1])
+    int(parts[0]), int(parts[1])
 
 let pairs = input |> Seq.map parsePair       // seq [(3, 4); (4, 3); (2, 5); (1, 3); (3, 9); (3, 3)]
 let left = pairs |> Seq.map fst |> Seq.sort  // seq [1; 2; 3; 3; 3; 4]
