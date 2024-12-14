@@ -6,10 +6,7 @@
 
 open System.Text.RegularExpressions
 
-let input =
-    if fsi.CommandLineArgs.Length > 1
-        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
-        else ("""xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))""").Split('\n')
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
 
 let rec parseMul (s:string) =
     let m = Regex.Match(s, @"mul\((\d{1,3}),(\d{1,3})\)(.*)")

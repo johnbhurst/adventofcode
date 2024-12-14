@@ -4,15 +4,7 @@
 // 2024-12-01
 // See https://adventofcode.com/2024/day/1
 
-let input =
-    if fsi.CommandLineArgs.Length > 1
-        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
-        else ("""3   4
-4   3
-2   5
-1   3
-3   9
-3   3""".Split('\n'))
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
 
 let parsePair (line:string) =
     let parts = line.Split("   ")

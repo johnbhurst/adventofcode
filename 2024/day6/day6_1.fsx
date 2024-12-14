@@ -4,19 +4,7 @@
 // 2024-12-14
 // See https://adventofcode.com/2024/day/6
 
-let input =
-    if fsi.CommandLineArgs.Length > 1
-        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
-        else ("""....#.....
-.........#
-..........
-..#.......
-.......#..
-..........
-.#..^.....
-........#.
-#.........
-......#...""".Split('\n'))
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
 
 let grid = array2D input
 let rows = Array2D.length1 grid

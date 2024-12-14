@@ -4,19 +4,7 @@
 // 2024-12-13
 // See https://adventofcode.com/2024/day/4
 
-let input =
-    if fsi.CommandLineArgs.Length > 1
-        then System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
-        else ("""MMMSXXMASM
-MSAMXMSMSA
-AMXSXMAAMM
-MSAMASMSMX
-XMASAMXAMM
-XXAMMXXAMA
-SMSMSASXSS
-SAXAMASAAA
-MAMMMXMMMM
-MXMXAXMASX""".Split('\n'))
+let input = System.IO.File.ReadLines(fsi.CommandLineArgs.[1])
 
 let grid = array2D input
 // [['M'; 'M'; 'M'; 'S'; 'X'; 'X'; 'M'; 'A'; 'S'; 'M']
