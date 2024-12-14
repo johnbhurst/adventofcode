@@ -21,7 +21,7 @@ let input =
 let grid = array2D input
 let rows = Array2D.length1 grid
 let cols = Array2D.length2 grid
-let indices = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j }
+let indices = seq { for i in 0..rows-1 do for j in 0..cols-1 -> i, j }
 let start = indices |> Seq.find (fun (i, j) -> grid.[i, j] = '^')
 
 let rec moveUp position positions =
