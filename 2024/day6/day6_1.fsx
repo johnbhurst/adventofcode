@@ -21,6 +21,8 @@ let input =
 let grid = array2D input
 let rows = Array2D.length1 grid
 let cols = Array2D.length2 grid
+let indices = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j }
+let start = indices |> Seq.find (fun (i, j) -> grid.[i, j] = '^')
 
 let rec moveUp position positions =
     let (i, j) = position
@@ -42,9 +44,6 @@ and moveLeft position positions =
     if j = 0 then positions
     elif grid[i, j-1] = '#' then moveUp position positions
     else moveLeft (i, j-1) (Set.add (i, j-1) positions)
-
-let indices = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j }
-let start = indices |> Seq.find (fun (i, j) -> grid.[i, j] = '^')
 
 moveUp start (Set.singleton start)
     |> Set.count
