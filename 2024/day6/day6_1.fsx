@@ -43,9 +43,8 @@ and moveLeft position positions =
     elif grid[i, j-1] = '#' then moveUp position positions
     else moveLeft (i, j-1) (Set.add (i, j-1) positions)
 
-let start =
-    seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j }
-    |> Seq.find (fun (i, j) -> grid[i, j] = '^')
+let indices = seq { for i in 0..rows-1 do for j in 0..cols-1 do yield i, j }
+let start = indices |> Seq.find (fun (i, j) -> grid.[i, j] = '^')
 
 moveUp start (Set.singleton start)
     |> Set.count
