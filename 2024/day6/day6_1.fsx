@@ -24,27 +24,22 @@ let cols = Array2D.length2 grid
 let indices = seq { for i in 0..rows-1 do for j in 0..cols-1 -> i, j }
 let start = indices |> Seq.find (fun (i, j) -> grid.[i, j] = '^')
 
-let rec moveUp position positions =
-    let (i, j) = position
-    if i = 0 then positions
-    elif grid[i-1, j] = '#' then moveRight position positions
-    else moveUp (i-1, j) (Set.add (i-1, j) positions)
-and moveRight position positions =
-    let (i, j) = position
-    if j = cols-1 then positions
-    elif grid[i, j+1] = '#' then moveDown position positions
-    else moveRight (i, j+1) (Set.add (i, j+1) positions)
-and moveDown position positions =
-    let (i, j) = position
-    if i = rows-1 then positions
-    elif grid[i+1, j] = '#' then moveLeft position positions
-    else moveDown (i+1, j) (Set.add (i+1, j) positions)
-and moveLeft position positions =
-    let (i, j) = position
-    if j = 0 then positions
-    elif grid[i, j-1] = '#' then moveUp position positions
-    else moveLeft (i, j-1) (Set.add (i, j-1) positions)
+let diroffset n =
+    match n with
+    | 0 -> -1, 0
+    | 1 -> 0, 1
+    | 2 -> 1, 0
+    | 3 -> 0, -1
+    | _ -> 0, 0
 
-moveUp start (Set.singleton start)
+let rec path direction position positions =
+    let (i, j) = position
+    let (ioffset, joffset) = diroffset direction
+    let (i2, j2) = i + ioffset, j + joffset
+    if i2 < 0 || i2 >= rows || j2 < 0 || j2 >= cols then positions
+    elif grid.[i2, j2] = '#' then path ((direction + 1) % 4) position positions
+    else path direction (i2, j2) (Set.add (i2, j2) positions)
+
+path 0 start (Set.singleton start)
     |> Set.count
     |> printfn "%A"
